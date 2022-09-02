@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./app",
+    "baseUrl": "./",
+    "esModuleInterop": true,
+    "allowUnreachableCode": false,
+    "alwaysStrict": true,
+    "strict": true,
+    "typeRoots":["./app/types","./node_modules/@types",]
+  }
+}
