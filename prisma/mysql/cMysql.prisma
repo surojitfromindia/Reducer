@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../app/generated/mysqlClient"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("MYSQL_DATABASE_URL")
+}
+
+model WorkSpace {
+  id              String           @unique // id of the workspace
+  user            User             @relation(fields: [userId], references: [id])
+  userId          String
+  SharedWorkspace SharedWorkspace?
+}
+
+model SharedWorkspace {
+  id          String    @unique
+  workspaceId WorkSpace @relation(fields: [id], references: [id])
+  user_id     User      @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+model User {
+  id              String            @unique
+  email           String            @unique
+  workspaces      WorkSpace[] //a user can  have multiple workspaces
+  SharedWorkspace SharedWorkspace[]
+}
