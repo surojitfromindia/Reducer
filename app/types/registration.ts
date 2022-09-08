@@ -9,3 +9,6 @@ type UserRegistrationReturn  = {
     email? : string
 }
 type UserRegistrationInfo  = IUserNewRegistration
+
+export type {IUserNewRegistration, UserRegistrationInfo, UserRegistrationReturn}
+
