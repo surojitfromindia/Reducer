@@ -31,7 +31,7 @@ type ErroMessges = {
   http_code: number;
 };
 
-type CustomErrorMessageKey = 'email_already_registed' | 'user_name_empty' | 'user_name_null'|"password_format"
+type CustomErrorMessageKey = 'email_already_registed' | 'user_name_empty' | 'user_name_null'|"password_format" | "email_is_not_registered" | "credential_do_not_match"
 type DbErrorMessagKey = 'db_connection_fail';
 type ErrorMessageKey = CustomErrorMessageKey | DbErrorMessagKey;
 type GroupCode = 'A1' | 'D1' | 'U' | 'V1'; //A1 - APPLICATION LEVEL ERROR, D1 - DATABASE LEVEL
@@ -67,5 +67,17 @@ const errorMessages: { [key: string]: ErroMessges } = {
     group_code: 'D1',
     http_code: 500,
   },
+  "email_is_not_registered" :{
+    code: 4,
+    message: 'This email is not registered',
+    group_code: 'A1',
+    http_code: 400,
+  },
+  "credential_do_not_match" :{
+    code: 5,
+    message: 'Either user name or password is incorrect',
+    group_code: 'A1',
+    http_code: 400,
+  }
 };
 export { CustomError, sendCustomError, CustomErrorFunctionType };

@@ -1,14 +1,16 @@
 //write controller for registration here.
 
-import { MysqlClient } from '../../../../config/DbClient';
-import { uid } from '../../../../utils/random';
+import { MysqlClient } from '../../../config/DbClient';
+import { uid } from '../../../utils/random';
 import { NextFunction, Request, Response } from 'express';
-import { CustomError } from '../../../../errors/errorMessages';
-import { UserRegistrationInfo, UserRegistrationReturn } from 'app/types/registration';
-import { hashPassword } from '../../../../utils/password';
+import { CustomError } from '../../../errors/errorMessages';
+import { hashPassword } from '../../../utils/password';
+import { signAccessToken } from '../../../utils/jwttoken';
+import { UserRegistrationInfo, UserRegistrationReturn } from 'app/types/user';
+import { User } from 'app/generated/mysqlClient';
 
 //register a new user and return inserted values and time of the insert/create
-const registerNewUser = async (user_info: UserRegistrationInfo): Promise<UserRegistrationReturn[] | null> => {
+const registerNewUser = async (user_info: UserRegistrationInfo): Promise<User | null> => {
   let user_name = user_info.user_name;
   if (await userAlreadyExists(user_name)) {
     throw new CustomError('email_already_registed');
@@ -23,7 +25,11 @@ const registerNewUser = async (user_info: UserRegistrationInfo): Promise<UserReg
         status: 'A',
       },
     });
-    let data = await MysqlClient.$queryRaw<UserRegistrationReturn[]>`select email as "user_name" from User where id=${new_user_reg_info.id}`;
+    let data = await MysqlClient.user.findFirst({
+      where :{
+        id : new_user_reg_info.id,
+      },
+    })
     return data;
   }
 };
@@ -49,13 +55,6 @@ const userAlreadyExists = async (username?: string): Promise<boolean> => {
   return true;
 };
 
-
-
-
-
-
-
-
 //express specfic handlers
 const Register = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -70,13 +69,18 @@ const Register = async (req: Request, res: Response, next: NextFunction) => {
       user_info.password = user_payload.password.toString();
       user_info.confirmpassword = user_payload.confirmpassword.toString();
       let reg_result = await registerNewUser(user_info);
-      res.json({
-        data: {
-          user_name: reg_result?.[0]?.user_name,
-          message: 'Registraction successfull',
-        },
-      });
-      return;
+      let user_reg = reg_result;
+      if (user_reg) {
+        let access_token = signAccessToken(user_reg);
+        res.json({
+          data: {
+            user_name: user_reg?.email,
+            message: 'Registration successfull',
+            access_token,
+          },
+        });
+        return;
+      }
     }
   } catch (error) {
     return next(error);
@@ -99,4 +103,4 @@ const UserRegisterValidate = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-export { UserRegisterValidate, Register };
+export { UserRegisterValidate, Register, userAlreadyExists };

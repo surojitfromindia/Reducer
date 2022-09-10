@@ -11,4 +11,8 @@ const hashPassword = async (plain_password: string) => {
   let hashed_password = await bcyr.hash(plain_password, 10);
   return hashed_password;
 };
-export {hashPassword}
+const verifyPassword  = async (plain_password : string, hashed_password: string)=>{
+ let password_matched = await  bcyr.compare(plain_password.toString(), hashed_password);
+ return password_matched
+}
+export {hashPassword, verifyPassword}
