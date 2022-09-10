@@ -26,12 +26,12 @@ const sendCustomError: CustomErrorFunctionType = function (this: Response, error
 
 type ErroMessges = {
   code: number;
-  message: string;
+  message: string | string[];
   group_code?: GroupCode;
   http_code: number;
 };
 
-type CustomErrorMessageKey = 'email_already_registed' | 'user_name_empty' | 'user_name_null';
+type CustomErrorMessageKey = 'email_already_registed' | 'user_name_empty' | 'user_name_null'|"password_format"
 type DbErrorMessagKey = 'db_connection_fail';
 type ErrorMessageKey = CustomErrorMessageKey | DbErrorMessagKey;
 type GroupCode = 'A1' | 'D1' | 'U' | 'V1'; //A1 - APPLICATION LEVEL ERROR, D1 - DATABASE LEVEL
@@ -54,6 +54,12 @@ const errorMessages: { [key: string]: ErroMessges } = {
     message: 'User name can not be null or undefined',
     group_code: 'A1',
     http_code: 400,
+  },
+  "password_format":{
+    code : 4,
+    message : ["Password must be 6 character long","Password can not have space"],
+    group_code : "A1",
+    http_code : 400
   },
   db_connection_fail: {
     code: 1,

@@ -37,6 +37,8 @@ export type SharedWorkspace = {
 export type User = {
   id: string
   email: string
+  password: string
+  status: string
 }
 
 
@@ -2726,16 +2728,22 @@ export namespace Prisma {
   export type UserMinAggregateOutputType = {
     id: string | null
     email: string | null
+    password: string | null
+    status: string | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
     email: string | null
+    password: string | null
+    status: string | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     email: number
+    password: number
+    status: number
     _all: number
   }
 
@@ -2743,16 +2751,22 @@ export namespace Prisma {
   export type UserMinAggregateInputType = {
     id?: true
     email?: true
+    password?: true
+    status?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
     email?: true
+    password?: true
+    status?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
     email?: true
+    password?: true
+    status?: true
     _all?: true
   }
 
@@ -2837,6 +2851,8 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: string
     email: string
+    password: string
+    status: string
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -2859,6 +2875,8 @@ export namespace Prisma {
   export type UserSelect = {
     id?: boolean
     email?: boolean
+    password?: boolean
+    status?: boolean
     workspaces?: boolean | WorkSpaceFindManyArgs
     SharedWorkspace?: boolean | SharedWorkspaceFindManyArgs
     _count?: boolean | UserCountOutputTypeArgs
@@ -3658,7 +3676,9 @@ export namespace Prisma {
 
   export const UserScalarFieldEnum: {
     id: 'id',
-    email: 'email'
+    email: 'email',
+    password: 'password',
+    status: 'status'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -3757,6 +3777,8 @@ export namespace Prisma {
     NOT?: Enumerable<UserWhereInput>
     id?: StringFilter | string
     email?: StringFilter | string
+    password?: StringFilter | string
+    status?: StringFilter | string
     workspaces?: WorkSpaceListRelationFilter
     SharedWorkspace?: SharedWorkspaceListRelationFilter
   }
@@ -3764,6 +3786,8 @@ export namespace Prisma {
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
+    password?: SortOrder
+    status?: SortOrder
     workspaces?: WorkSpaceOrderByRelationAggregateInput
     SharedWorkspace?: SharedWorkspaceOrderByRelationAggregateInput
   }
@@ -3776,6 +3800,8 @@ export namespace Prisma {
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
+    password?: SortOrder
+    status?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -3787,6 +3813,8 @@ export namespace Prisma {
     NOT?: Enumerable<UserScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     email?: StringWithAggregatesFilter | string
+    password?: StringWithAggregatesFilter | string
+    status?: StringWithAggregatesFilter | string
   }
 
   export type WorkSpaceCreateInput = {
@@ -3864,6 +3892,8 @@ export namespace Prisma {
   export type UserCreateInput = {
     id: string
     email: string
+    password: string
+    status?: string
     workspaces?: WorkSpaceCreateNestedManyWithoutUserInput
     SharedWorkspace?: SharedWorkspaceCreateNestedManyWithoutUser_idInput
   }
@@ -3871,6 +3901,8 @@ export namespace Prisma {
   export type UserUncheckedCreateInput = {
     id: string
     email: string
+    password: string
+    status?: string
     workspaces?: WorkSpaceUncheckedCreateNestedManyWithoutUserInput
     SharedWorkspace?: SharedWorkspaceUncheckedCreateNestedManyWithoutUser_idInput
   }
@@ -3878,6 +3910,8 @@ export namespace Prisma {
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     workspaces?: WorkSpaceUpdateManyWithoutUserNestedInput
     SharedWorkspace?: SharedWorkspaceUpdateManyWithoutUser_idNestedInput
   }
@@ -3885,6 +3919,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     workspaces?: WorkSpaceUncheckedUpdateManyWithoutUserNestedInput
     SharedWorkspace?: SharedWorkspaceUncheckedUpdateManyWithoutUser_idNestedInput
   }
@@ -3892,16 +3928,22 @@ export namespace Prisma {
   export type UserCreateManyInput = {
     id: string
     email: string
+    password: string
+    status?: string
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter = {
@@ -4003,16 +4045,22 @@ export namespace Prisma {
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
+    password?: SortOrder
+    status?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
+    password?: SortOrder
+    status?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
+    password?: SortOrder
+    status?: SortOrder
   }
 
   export type UserCreateNestedOneWithoutWorkspacesInput = {
@@ -4222,12 +4270,16 @@ export namespace Prisma {
   export type UserCreateWithoutWorkspacesInput = {
     id: string
     email: string
+    password: string
+    status?: string
     SharedWorkspace?: SharedWorkspaceCreateNestedManyWithoutUser_idInput
   }
 
   export type UserUncheckedCreateWithoutWorkspacesInput = {
     id: string
     email: string
+    password: string
+    status?: string
     SharedWorkspace?: SharedWorkspaceUncheckedCreateNestedManyWithoutUser_idInput
   }
 
@@ -4257,12 +4309,16 @@ export namespace Prisma {
   export type UserUpdateWithoutWorkspacesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     SharedWorkspace?: SharedWorkspaceUpdateManyWithoutUser_idNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkspacesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     SharedWorkspace?: SharedWorkspaceUncheckedUpdateManyWithoutUser_idNestedInput
   }
 
@@ -4297,12 +4353,16 @@ export namespace Prisma {
   export type UserCreateWithoutSharedWorkspaceInput = {
     id: string
     email: string
+    password: string
+    status?: string
     workspaces?: WorkSpaceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSharedWorkspaceInput = {
     id: string
     email: string
+    password: string
+    status?: string
     workspaces?: WorkSpaceUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -4334,12 +4394,16 @@ export namespace Prisma {
   export type UserUpdateWithoutSharedWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     workspaces?: WorkSpaceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSharedWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     workspaces?: WorkSpaceUncheckedUpdateManyWithoutUserNestedInput
   }
 

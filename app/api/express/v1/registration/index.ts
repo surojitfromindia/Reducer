@@ -5,21 +5,25 @@ import { uid } from '../../../../utils/random';
 import { NextFunction, Request, Response } from 'express';
 import { CustomError } from '../../../../errors/errorMessages';
 import { UserRegistrationInfo, UserRegistrationReturn } from 'app/types/registration';
+import { hashPassword } from '../../../../utils/password';
 
 //register a new user and return inserted values and time of the insert/create
-const registerNewUser = async (user_info: UserRegistrationInfo): Promise<UserRegistrationReturn | null> => {
+const registerNewUser = async (user_info: UserRegistrationInfo): Promise<UserRegistrationReturn[] | null> => {
   let user_name = user_info.user_name;
   if (await userAlreadyExists(user_name)) {
     throw new CustomError('email_already_registed');
   } else {
     //code to register new user
+    let hashed_password = await hashPassword(user_info.password);
     let new_user_reg_info = await MysqlClient.user.create({
       data: {
         email: user_name,
         id: uid(),
+        password: hashed_password,
+        status: 'A',
       },
     });
-    let data = await MysqlClient.$queryRaw<UserRegistrationReturn>`select email as "user_name" from "User" where id =${new_user_reg_info.id}`;
+    let data = await MysqlClient.$queryRaw<UserRegistrationReturn[]>`select email as "user_name" from User where id=${new_user_reg_info.id}`;
     return data;
   }
 };
@@ -28,7 +32,7 @@ const registerNewUser = async (user_info: UserRegistrationInfo): Promise<UserReg
 //if it exits return true else false
 //make sure the parameter passed should be a string
 const userAlreadyExists = async (username?: string): Promise<boolean> => {
-  if (username === undefined || username==="") {
+  if (username === undefined || username === '') {
     throw new CustomError('user_name_empty');
   } else if (username === null) {
     throw new CustomError('user_name_null');
@@ -45,7 +49,15 @@ const userAlreadyExists = async (username?: string): Promise<boolean> => {
   return true;
 };
 
-const Register = async (req: Request, res: Response, next:NextFunction) => {
+
+
+
+
+
+
+
+//express specfic handlers
+const Register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let user_info: UserRegistrationInfo = {
       user_name: '',
@@ -55,12 +67,19 @@ const Register = async (req: Request, res: Response, next:NextFunction) => {
     let user_payload = req?.body;
     if (user_payload?.user_name && user_payload?.password && user_payload?.confirmpassword) {
       user_info.user_name = user_payload.user_name.toString();
-      user_info.password = user_payload.passed.toString();
+      user_info.password = user_payload.password.toString();
       user_info.confirmpassword = user_payload.confirmpassword.toString();
-      await registerNewUser(user_info);
+      let reg_result = await registerNewUser(user_info);
+      res.json({
+        data: {
+          user_name: reg_result?.[0]?.user_name,
+          message: 'Registraction successfull',
+        },
+      });
+      return;
     }
   } catch (error) {
-    next(error)
+    return next(error);
   }
 };
 
@@ -72,7 +91,7 @@ const UserRegisterValidate = async (req: Request, res: Response, next: NextFunct
       success: true,
       data: {
         user_already_registered: is_already_exists,
-        message: is_already_exists ? 'This username is already registered':  "User name is available",
+        message: is_already_exists ? 'This username is already registered' : 'User name is available',
       },
     });
   } catch (error) {
@@ -80,4 +99,4 @@ const UserRegisterValidate = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-export { UserRegisterValidate };
+export { UserRegisterValidate, Register };

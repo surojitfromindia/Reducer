@@ -28,6 +28,8 @@ model SharedWorkspace {
 model User {
   id              String            @unique
   email           String            @unique
+  password        String
+  status          String            @default("A")
   workspaces      WorkSpace[] //a user can  have multiple workspaces
   SharedWorkspace SharedWorkspace[]
 }
